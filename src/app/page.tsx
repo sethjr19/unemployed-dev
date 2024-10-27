@@ -14,16 +14,16 @@ export default function Home() {
           <span className="sr-only">Project Hub</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/">
             Home
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/projects">
+            Projects
+          </Link>
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/about">
             About
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
-            Events
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/contact">
             Contact
           </Link>
         </nav>
@@ -41,12 +41,14 @@ export default function Home() {
                   together. </p>
               </div>
               <div className="space-x-4">
-                <Link href='/pages/login'>
+                <Link href='/login'>
                   <Button className="bg-white text-black hover:bg-gray-200">Join Now</Button>
                 </Link>
+                <Link href='about'>
                 <Button variant="outline" className="text-black border-white hover:bg-white hover:text-black">
                   Learn More
                 </Button>
+                </Link>
               </div>
             </div>
           </div>
