@@ -8,6 +8,7 @@ import {Label} from "@/components/ui/label"
 import {Textarea} from "@/components/ui/textarea"
 import {MountainIcon, Mail, Phone, MapPin} from 'lucide-react'
 import Link from 'next/link'
+import Navbar from '@/components/navbar'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -20,12 +21,12 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
 
-  const handleChange = (e) => {
+  const handleChange = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = e.target
     setFormData(prevState => ({...prevState, [name]: value}))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     // Simulate form submission
@@ -37,26 +38,7 @@ export default function ContactPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center">
-        <Link className="flex items-center justify-center" href="/">
-          <MountainIcon className="h-6 w-6"/>
-          <span className="ml-2 text-lg font-semibold">ProjectHub</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/">
-            Home
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/projects">
-            Projects
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/about">
-            About
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/contact">
-            Contact
-          </Link>
-        </nav>
-      </header>
+      <Navbar />
       <main className="flex-1 py-12 px-4 md:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto space-y-12">
           <section className="text-center space-y-4">

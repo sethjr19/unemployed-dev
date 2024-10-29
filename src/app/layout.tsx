@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import './globals.css';
+import { AuthProvider } from "./context/AuthContext";
 
 const pretendard = localFont({
   src: "../app/fonts/PretendardVariable.woff2",
@@ -13,11 +14,13 @@ export default function RootLayout({
                                    }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="kr" className={`${pretendard.variable}`}>
     <body className={pretendard.className}>
-
+    <AuthProvider>
     {children}
+    </AuthProvider>
     </body>
     </html>
   );

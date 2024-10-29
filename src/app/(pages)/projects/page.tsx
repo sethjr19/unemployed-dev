@@ -8,6 +8,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Badge} from "@/components/ui/badge"
 import {MountainIcon, Search, Users} from 'lucide-react'
 import Link from 'next/link'
+import Navbar from '@/components/navbar'
 // Mock data for projects with roles
 const projects = [
   {
@@ -79,26 +80,7 @@ export default function CommunityProjects() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center">
-        <Link className="flex items-center justify-center" href="/">
-          <MountainIcon className="h-6 w-6"/>
-          <span className="ml-2 text-lg font-semibold">Project Hub</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/">
-            Home
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/projects">
-            Projects
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/about">
-            About
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/contact">
-            Contact
-          </Link>
-        </nav>
-      </header>
+      <Navbar/>
       <main className="flex-1 py-12 px-4 md:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="text-center space-y-2">

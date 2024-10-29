@@ -8,10 +8,24 @@ import {Label} from "@/components/ui/label"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
 import {MountainIcon, Facebook, Twitter, Github} from 'lucide-react'
 import Link from 'next/link'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { getDatabase, ref, set } from "firebase/database";
+import { auth } from '../../firebase/firebaseConfig'
+import { useRouter } from "next/navigation"; // For redirection after login
 
 export default function AuthPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [confirmpass, setConfirmpass] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [error, setError] = useState<string>('')
+  const [success, setSuccess] = useState<string | null>('')
 
+  const router = useRouter()
+  const db = getDatabase();
+
+  
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
     setIsLoading(true)
@@ -21,6 +35,54 @@ export default function AuthPage() {
     }, 3000)
   }
 
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    try {
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      const user = response.user;
+      router.push('/');
+      console.log('user is:', user)
+      setEmail('')
+      setPassword('')
+    } catch (err: any) {
+      console.log(err.message);
+      setError(err.message);
+    }
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Basic validation
+    if (!username || !email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    // Simulate registration logic (replace with actual API call)
+    try {
+      const response = await createUserWithEmailAndPassword(auth, email, password)
+      const user = response.user
+      console.log('user is:', user)
+      set(ref(db, 'users/' + user.uid), {
+        username: username,
+        email: email,
+        userID: user.uid,
+        dateCreated: new Date().toISOString(),
+      });
+      setSuccess('Registration successful!');
+      setUsername('');
+      setEmail('');
+      setPassword('');
+      setError('');
+      router.push('/');
+    } catch (error) {
+      setError('Registration failed. Please try again.');
+      setSuccess(null);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">
@@ -29,7 +91,7 @@ export default function AuthPage() {
           <span className="sr-only">Community Website</span>
         </Link>
       </header>
-      <main className="flex-1 flex items-center justify-center p-4">
+      <main className="flex-1 flex items-start justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">Welcome to ProjectHub</CardTitle>
@@ -44,15 +106,18 @@ export default function AuthPage() {
                 <TabsTrigger value="signup">Sign Up</TabsTrigger>
               </TabsList>
               <TabsContent value="login">
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleLogin}>
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" placeholder="m@example.com" required type="email"/>
+                      <Input id="email" placeholder="m@example.com" required type="email" onChange={(e) => setEmail(e.target.value)}/>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="password">Password</Label>
-                      <Input id="password" required type="password"/>
+                      <Input id="password" required type="password" onChange={(e) => setPassword(e.target.value)}/>
+                    </div>
+                    <div>
+                      {error && <p className="text-red-500">{error}</p>}
                     </div>
                     <Button className="w-full" type="submit">
                       {isLoading ? (
@@ -68,23 +133,23 @@ export default function AuthPage() {
                 </form>
               </TabsContent>
               <TabsContent value="signup">
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleSignUp}>
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">Full Name</Label>
-                      <Input id="name" placeholder="John Doe" required/>
+                      <Input id="name" placeholder="John Doe" required onChange={(e) => setUsername(e.target.value)}/>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" placeholder="m@example.com" required type="email"/>
+                      <Input id="email" placeholder="m@example.com" required type="email" onChange={(e) => setEmail(e.target.value)}/>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="password">Password</Label>
-                      <Input id="password" required type="password"/>
+                      <Input id="password" required type="password" onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="confirm-password">Confirm Password</Label>
-                      <Input id="confirm-password" required type="password"/>
+                      <Input id="confirm-password" required type="password" onChange={(e) => setConfirmpass(e.target.value)}/>
                     </div>
                     <Button className="w-full" type="submit">
                       {isLoading ? (
