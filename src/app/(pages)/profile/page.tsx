@@ -1,5 +1,7 @@
 'use client'
 import { useAuth } from "@/app/context/AuthContext"
+import { auth } from "../../firebase/firebaseConfig"
+import { signOut } from "firebase/auth"
 import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 import {Button} from "@/components/ui/button"
@@ -18,11 +20,25 @@ type userDetails = {
     dateCreated: string,
 }
 
-export default function AboutPage() {
+export default function Profile() {
     const { user } = useAuth()
     const [userDetails, setUserDetails] = useState<userDetails | null>(null)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const router = useRouter()
     const db = getDatabase();
+
+  
+    const Logout = async () => {
+      try {
+      setIsLoading(true);
+      await signOut(auth);
+      console.log('user is', user)
+      setIsLoading(false);
+      router.push('/');
+      } catch (error) {
+        console.log(error);
+      }
+    }
   
     useEffect(() => {
       if (!user) {
@@ -44,6 +60,16 @@ export default function AboutPage() {
       <Navbar/>
       <main className="flex-1 py-12 px-4 md:px-6 lg:px-8">
         <h1>Welcome {userDetails?.username}</h1>
+        <Button className="w-full" type="submit" onClick={() => Logout()}>
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <div className="w-4 h-4 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
+              <span className="ml-2">Signing Out</span>
+            </div>
+          ) : (
+            "Logout"
+          )}
+        </Button>
       </main>
     </div>
   )
