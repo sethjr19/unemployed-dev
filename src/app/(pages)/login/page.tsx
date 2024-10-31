@@ -1,6 +1,6 @@
 'use client'
 
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
 import {Input} from "@/components/ui/input"
@@ -12,6 +12,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'fire
 import { getDatabase, ref, set } from "firebase/database";
 import { auth } from '../../firebase/firebaseConfig'
 import { useRouter } from "next/navigation"; // For redirection after login
+import { useAuth } from '@/app/context/AuthContext'
 
 export default function AuthPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -23,9 +24,16 @@ export default function AuthPage() {
   const [success, setSuccess] = useState<string | null>('')
 
   const router = useRouter()
+  const {user} = useAuth()
   const db = getDatabase();
 
-  
+  useEffect(() => {
+    if (user) {
+      // Redirect if user is logged in
+      router.push('/');
+    }
+  }, [user, router]);
+
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
     setIsLoading(true)
@@ -37,8 +45,9 @@ export default function AuthPage() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+    setIsLoading(true)
     try {
+      setIsLoading(false)
       const response = await signInWithEmailAndPassword(auth, email, password);
       const user = response.user;
       router.push('/');

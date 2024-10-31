@@ -12,11 +12,21 @@ import Mainhero from "@/components/mainhero"
 import Footer from "@/components/footer"
 import { useAuth } from "./context/AuthContext"
 import { useRouter } from 'next/navigation'
+import Cardcontainer from '@/components/homepage/Cardcontainer'
+import Projectcontainer from '@/components/homepage/Projectcontainer'
 
 export function HomeLayout() { 
   return (
-    <div className="flex flex-col min-h-screen">
-      <h1>HOME LAYOUT</h1>
+    <div className="flex flex-col min-h-screen container">
+      <div className='mt-[3rem]'>
+        <Cardcontainer/>
+
+        <section className='mt-[3rem]'>
+          <Projectcontainer/>
+        </section>
+        
+      </div>
+      
     </div>
     
   )
