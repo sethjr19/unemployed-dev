@@ -5,10 +5,10 @@ import Projectcard from './Projectcard'
 import { firestore } from '@/app/firebase/firebaseConfig'
 import { collection, getDocs } from 'firebase/firestore';
 
-interface Project {
+export interface Project {
     Title: string; // Change these based on your actual fields
     Description: string;
-    UserID?: string; // Optional if a user may not be associated
+    User: string; 
     Date: string;
   }
 
@@ -41,8 +41,8 @@ const Projectcontainer = () => {
     
 
   return (
-    <div className='container'>
-        <div className='flex gap-4 '>
+    <div>
+        <div className='flex gap-4 overflow-hidden '>
             {projects.map((project: any, index: number) => (
                 <Projectcard project={project} key={index} />
             ))}

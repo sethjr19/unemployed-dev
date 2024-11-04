@@ -13,6 +13,7 @@ import { useAuth } from '@/app/context/AuthContext'
 import { firestore } from '@/app/firebase/firebaseConfig'
 import { collection, addDoc } from "firebase/firestore"; 
 import { Tags } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 const Createpage = () => {
     const { user } = useAuth()
@@ -20,9 +21,7 @@ const Createpage = () => {
     const [title, setTitle] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [tags, setTags] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [error, setError] = useState<string>('')
-    const [success, setSuccess] = useState<string | null>('')
+    const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
         console.log(title, 'and', description, 'from user', user)
@@ -35,7 +34,8 @@ const Createpage = () => {
                 Date: new Date().toISOString(),
               });
             console.log("Document written with ID: ", docRef.id);
-            setTitle(''); setDescription(''); setTags(''); setEmail('');
+            setTitle(''); setDescription(''); setTags('')
+            router.push('/')
         }catch (e) {
             console.error("Error adding document: ", e);
           }

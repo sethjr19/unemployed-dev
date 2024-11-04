@@ -17,7 +17,7 @@ import Projectcontainer from '@/components/homepage/Projectcontainer'
 
 export function HomeLayout() { 
   return (
-    <div className="flex flex-col min-h-screen container">
+    <div className="flex flex-col min-h-screen container md:pr-0 md:mr-0">
       <div className='mt-[3rem]'>
         <Cardcontainer/>
 
