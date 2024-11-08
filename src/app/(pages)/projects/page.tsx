@@ -1,14 +1,14 @@
 'use client'
 
 import {useState} from 'react'
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {Badge} from "@/components/ui/badge"
+import {Button} from "@/app/components/ui/button"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/app/components/ui/card"
+import {Input} from "@/app/components/ui/input"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/app/components/ui/select"
+import {Badge} from "@/app/components/ui/badge"
 import {MountainIcon, Search, Users} from 'lucide-react'
 import Link from 'next/link'
-import Navbar from '@/components/navbar'
+import Navbar from '@/app/components/navbar'
 // Mock data for projects with roles
 const projects = [
   {
