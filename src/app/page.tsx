@@ -1,9 +1,9 @@
 'use client'
 
 import {useEffect} from 'react'
-import {Button} from "@/app/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/app/components/ui/card"
-import {Input} from "@/app/components/ui/input"
+import {Button} from "@/app/shared/ui/button"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/app/shared/ui/card"
+import {Input} from "@/app/shared/ui/input"
 import {Facebook, Instagram, MountainIcon, Twitter} from "lucide-react"
 import Link from "next/link"
 import '../../src/app/globals.css'

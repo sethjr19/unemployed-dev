@@ -5,7 +5,7 @@ import Projectcard from './Projectcard'
 import { firestore } from '@/app/firebase/firebaseConfig'
 import { collection, getDocs } from 'firebase/firestore';
 
-interface Project {
+export interface Project {
     Title: string; // Change these based on your actual fields
     Description: string;
     UserID?: string; // Optional if a user may not be associated

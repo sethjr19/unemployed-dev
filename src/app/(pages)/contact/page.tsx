@@ -1,11 +1,11 @@
 'use client'
 
 import {useState} from 'react'
-import {Button} from "@/app/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/app/components/ui/card"
-import {Input} from "@/app/components/ui/input"
-import {Label} from "@/app/components/ui/label"
-import {Textarea} from "@/app/components/ui/textarea"
+import {Button} from "@/app/shared/ui/button"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/app/shared/ui/card"
+import {Input} from "@/app/shared/ui/input"
+import {Label} from "@/app/shared/ui/label"
+import {Textarea} from "@/app/shared/ui/textarea"
 import {MountainIcon, Mail, Phone, MapPin} from 'lucide-react'
 import Link from 'next/link'
 import Navbar from '@/app/components/navbar'

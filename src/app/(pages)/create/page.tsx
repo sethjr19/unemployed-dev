@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useState } from 'react'
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/app/components/ui/tabs"
-import {Button} from "@/app/components/ui/button"
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/app/components/ui/card"
-import {Input} from "@/app/components/ui/input"
-import {Label} from "@/app/components/ui/label"
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/app/shared/ui/tabs"
+import {Button} from "@/app/shared/ui/button"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/app/shared/ui/card"
+import {Input} from "@/app/shared/ui/input"
+import {Label} from "@/app/shared/ui/label"
 import Link from 'next/link'
 import Navbar from '@/app/components/navbar'
-import { Textarea } from '@/app/components/ui/textarea'
+import { Textarea } from '@/app/shared/ui/textarea'
 import { useAuth } from '@/app/context/AuthContext'
 import { firestore } from '@/app/firebase/firebaseConfig'
 import { collection, addDoc } from "firebase/firestore"; 
