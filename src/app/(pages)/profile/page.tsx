@@ -4,7 +4,7 @@ import {auth} from "../../firebase/firebaseConfig"
 import {signOut} from "firebase/auth"
 import {Button} from "@/app/shared/ui/button"
 import {Card, CardContent, CardHeader, CardTitle} from "@/app/shared/ui/card"
-import {getDatabase, onValue, ref} from "firebase/database"
+import {getDatabase} from "firebase/database"
 
 import {useRouter} from "next/navigation"
 import {useEffect, useState} from "react"
@@ -12,22 +12,31 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/app/shared/ui/avatar"
 import {Badge} from "@/app/shared/ui/badge"
 import {Progress} from "@/app/shared/ui/progress"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/app/shared/ui/tabs"
-import {BookOpen, Github, GraduationCap, Linkedin, Mail, MapPin, Rocket, Trophy, Users} from "lucide-react"
+import {
+  BookOpen,
+  Eye,
+  Github,
+  GraduationCap,
+  Linkedin,
+  Mail,
+  MapPin, MessageSquare,
+  Rocket,
+  Star,
+  Trophy,
+  UserPlus,
+  Users
+} from "lucide-react"
+import {userProfileDetails} from "@/app/(pages)/profile/data/profileData";
+import {UserProfileDetails} from "@/app/(pages)/profile/types/profileDetailTypes";
 
-
-type userDetails = {
-  username: string,
-  email: string,
-  userID: string,
-  dateCreated: string,
-}
 
 export default function Profile() {
   const {user} = useAuth()
-  const [userDetails, setUserDetails] = useState<userDetails | null>(null)
+  const [userDetails, setUserDetails] = useState<UserProfileDetails | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
   const db = getDatabase();
+
 
 
   const Logout = async () => {
@@ -40,16 +49,11 @@ export default function Profile() {
 
     }
   }
-
   useEffect(() => {
     if (!user) {
       router.push('/');
     } else {
-      const userProfile = ref(db, 'users/' + user.uid);
-      onValue(userProfile, (snapshot) => {
-        const user = snapshot.val();
-        setUserDetails(user);
-      })
+      setUserDetails(userProfileDetails);
     }
   }, [user, router]);
 
@@ -63,18 +67,35 @@ export default function Profile() {
       <Card className="mb-8">
         <CardContent className="pt-6">
           <div className="flex flex-col items-center space-y-4 md:flex-row md:space-x-6 md:space-y-0">
-            <Avatar className="h-32 w-32">
-              <AvatarImage alt="John Doe" src="/placeholder.svg?height=128&width=128"/>
-              <AvatarFallback>TT</AvatarFallback>
-            </Avatar>
+            <div className="relative">
+              <Avatar className="h-32 w-32">
+                <AvatarImage alt={userProfileDetails.username} src="/placeholder.svg?height=128&width=128"/>
+                <AvatarFallback>{userProfileDetails.username.slice(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <Badge
+                variant={userProfileDetails.isOnline ? "default" : "secondary"}
+                className="absolute bottom-0 right-0 h-6 w-6 rounded-full p-1 bg-green-500"
+              >
+                <span className="sr-only">{userProfileDetails.isOnline ? "Online" : "Offline"}</span>
+              </Badge>
+            </div>
             <div className="text-center md:text-left">
-              <h1 className="text-3xl font-bold">{userDetails?.username} 👨‍💻</h1>
-              <p className="text-xl text-muted-foreground">Front End Developer | Lifelong Learner 🚀</p>
+              <div className="flex items-center justify-center space-x-2 md:justify-start">
+                <h1 className="text-3xl font-bold">{userProfileDetails.username} 👨‍💻</h1>
+              </div>
+              <p className="text-xl text-muted-foreground">{userProfileDetails.bio}</p>
               <div className="mt-2 flex items-center justify-center space-x-2 md:justify-start">
                 <MapPin className="h-4 w-4"/>
-                <span>Kuala Lumpur, KL 🌉</span>
+                <span>{userProfileDetails.location}</span>
               </div>
-              <div className="mt-4 flex justify-center space-x-4 md:justify-start">
+              <div className="mt-4 flex flex-wrap justify-center gap-2 md:justify-start">
+                <Button size="sm" variant={userProfileDetails.isFollowing ? "secondary" : "default"}>
+                  {userProfileDetails.isFollowing ? "Following" : "Follow"}
+                </Button>
+                <Button size="sm" variant="outline">
+                  <MessageSquare className="mr-2 h-4 w-4"/>
+                  Message
+                </Button>
                 <Button size="icon" variant="outline">
                   <Github className="h-4 w-4"/>
                   <span className="sr-only">GitHub</span>
@@ -88,6 +109,28 @@ export default function Profile() {
                   <span className="sr-only">Email</span>
                 </Button>
               </div>
+            </div>
+          </div>
+          <div className="mt-6 grid gap-4 text-center sm:grid-cols-4">
+            <div className="flex flex-col items-center">
+              <Users className="mb-2 h-5 w-5"/>
+              <span className="text-2xl font-bold">{userProfileDetails.followers}</span>
+              <span className="text-sm text-muted-foreground">Followers</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <UserPlus className="mb-2 h-5 w-5"/>
+              <span className="text-2xl font-bold">{userProfileDetails.following}</span>
+              <span className="text-sm text-muted-foreground">Following</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <Eye className="mb-2 h-5 w-5"/>
+              <span className="text-2xl font-bold">{userProfileDetails.watched}</span>
+              <span className="text-sm text-muted-foreground">Watched</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <Star className="mb-2 h-5 w-5"/>
+              <span className="text-2xl font-bold">{userProfileDetails.starred}</span>
+              <span className="text-sm text-muted-foreground">Starred</span>
             </div>
           </div>
         </CardContent>
@@ -107,12 +150,7 @@ export default function Profile() {
             </CardHeader>
             <CardContent>
               <p>
-                *ALL FAKE INFO*
-                Hey there! 👋 I'm Brian, a passionate front end developer with 1+ years of experience. I love building
-                scalable
-                web applications and exploring new technologies. When I'm not coding, you can find me hiking 🏞️ or
-                playing chess
-                ♟️. Always excited to learn and connect with fellow tech enthusiasts!
+                {userProfileDetails.aboutMe}
               </p>
             </CardContent>
           </Card>
@@ -122,11 +160,9 @@ export default function Profile() {
             </CardHeader>
             <CardContent>
               <ul className="list-inside list-disc space-y-2">
-                <li>🎓 Computer Science graduate from Warwick University</li>
-                <li>🏆 Won 1st place in the UCL Startup Pitch Competition</li>
-                <li>🌱 Currently learning Next and exploring the world of PM</li>
-                <li>🎯 Goal: Contribute to 10 open-source projects this year</li>
-                <li>🎸 Fun fact: I play league</li>
+                {userProfileDetails.quickFacts.map((quickFact, index) => (
+                  <li key={index}>{quickFact}</li>
+                ))}
               </ul>
             </CardContent>
           </Card>
@@ -138,33 +174,17 @@ export default function Profile() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <div className="flex justify-between">
-                  <span>JavaScript/TypeScript</span>
-                  <span>95%</span>
-                </div>
-                <Progress value={95} className="mt-2"/>
+                {userProfileDetails.skills.map((skill, index) => (
+                  <div key={index} className="mb-4">
+                    <div className="flex justify-between">
+                      <span>{skill.name}</span>
+                      <span>{skill.level}%</span>
+                    </div>
+                    <Progress value={skill.level} className="mt-2"/>
+                  </div>
+                ))}
               </div>
-              <div>
-                <div className="flex justify-between">
-                  <span>React & Next.js</span>
-                  <span>90%</span>
-                </div>
-                <Progress value={90} className="mt-2"/>
-              </div>
-              <div>
-                <div className="flex justify-between">
-                  <span>Node.js & Express</span>
-                  <span>85%</span>
-                </div>
-                <Progress value={85} className="mt-2"/>
-              </div>
-              <div>
-                <div className="flex justify-between">
-                  <span>AWS & Cloud Technologies</span>
-                  <span>80%</span>
-                </div>
-                <Progress value={80} className="mt-2"/>
-              </div>
+
             </CardContent>
           </Card>
           <Card>
@@ -173,23 +193,19 @@ export default function Profile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div>
-                  <h3 className="font-semibold">Senior Full Stack Developer - Tech Innovators Inc. 🚀</h3>
-                  <p className="text-sm text-muted-foreground">2020 - Present</p>
-                  <ul className="mt-2 list-inside list-disc">
-                    <li>Led development of a microservices-based e-commerce platform</li>
-                    <li>Mentored junior developers and conducted knowledge-sharing sessions</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-semibold">Full Stack Developer - WebSolutions Co. 💻</h3>
-                  <p className="text-sm text-muted-foreground">2018 - 2020</p>
-                  <ul className="mt-2 list-inside list-disc">
-                    <li>Developed and maintained multiple client websites using React and Node.js</li>
-                    <li>Implemented performance optimizations, improving load times by 40%</li>
-                  </ul>
-                </div>
+                {userProfileDetails.experience.map((job, index) => (
+                  <div key={index}>
+                    <h3 className="font-semibold">{job.title}</h3>
+                    <p className="text-sm text-muted-foreground">{job.date}</p>
+                    <ul className="mt-2 list-inside list-disc">
+                      {job.details.map((task, taskIndex) => (
+                        <li key={taskIndex}>{task}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
+
             </CardContent>
           </Card>
         </TabsContent>
@@ -200,10 +216,9 @@ export default function Profile() {
             </CardHeader>
             <CardContent>
               <ul className="list-inside list-disc space-y-2">
-                <li>Mastering Rust programming language 🦀</li>
-                <li>Exploring Web3 and blockchain technologies 🔗</li>
-                <li>Deepening knowledge in system design and architecture 🏗️</li>
-                <li>Improving skills in AI and machine learning 🤖</li>
+                {userProfileDetails.learningGoals.map((learningGoals, index) => (
+                  <li key={index}>{learningGoals}</li>
+                ))}
               </ul>
             </CardContent>
           </Card>
@@ -218,10 +233,10 @@ export default function Profile() {
                     <BookOpen className="mr-2 h-5 w-5"/>
                     Favorite Books
                   </h3>
-                  <ul className="mt-2 list-inside list-disc">
-                    <li>"Clean Code" by Robert C. Martin</li>
-                    <li>"Designing Data-Intensive Applications" by Martin Kleppmann</li>
-                    <li>"The Pragmatic Programmer" by Andrew Hunt and David Thomas</li>
+                  <ul className="mt-2 list-inside list-disc ">
+                    {userProfileDetails.favoriteBooks.map((favoriteBooks, index) => (
+                      <li key={index}>{favoriteBooks}</li>
+                    ))}
                   </ul>
                 </div>
                 <div>
@@ -229,10 +244,10 @@ export default function Profile() {
                     <Rocket className="mr-2 h-5 w-5"/>
                     Online Courses
                   </h3>
-                  <ul className="mt-2 list-inside list-disc">
-                    <li>CS50's Web Programming with Python and JavaScript</li>
-                    <li>Advanced React and GraphQL by Wes Bos</li>
-                    <li>Machine Learning by Andrew Ng (Coursera)</li>
+                  <ul className="mt-2 list-inside list-disc ">
+                    {userProfileDetails.onlineCourses.map((onlineCourses, index) => (
+                      <li key={index}>{onlineCourses}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -244,10 +259,9 @@ export default function Profile() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                <Badge>AWS Certified Solutions Architect</Badge>
-                <Badge>Google Cloud Professional Developer</Badge>
-                <Badge>Certified Kubernetes Administrator</Badge>
-                <Badge>Certified Scrum Master</Badge>
+                {userProfileDetails.certifications.map((certification, index) => (
+                  <Badge key={index}>{certification}</Badge>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -259,40 +273,18 @@ export default function Profile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div>
-                  <h3 className="flex items-center font-semibold">
-                    <Users className="mr-2 h-5 w-5"/>
-                    Mentorship
-                  </h3>
-                  <p className="mt-2">
-                    I'm passionate about giving back to the community. I mentor 3 junior developers, helping them
-                    navigate their
-                    career paths and tackle technical challenges.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="flex items-center font-semibold">
-                    <Trophy className="mr-2 h-5 w-5"/>
-                    Hackathons & Events
-                  </h3>
-                  <p className="mt-2">
-                    I regularly participate in and organize local hackathons. Last year, I helped organize a charity
-                    hackathon
-                    that raised $10,000 for coding education in underserved communities.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="flex items-center font-semibold">
-                    <GraduationCap className="mr-2 h-5 w-5"/>
-                    Teaching & Workshops
-                  </h3>
-                  <p className="mt-2">
-                    I run a monthly workshop series on web development basics for beginners. So far, we've helped over
-                    100
-                    aspiring developers start their coding journey!
-                  </p>
-                </div>
+                {userProfileDetails.communityInvolvement.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <h3 className="flex items-center font-semibold">
+                        {item.title}
+                      </h3>
+                      <p>{item.description}</p>
+                    </div>
+                  );
+                })}
               </div>
+
             </CardContent>
           </Card>
           <Card>
@@ -301,23 +293,14 @@ export default function Profile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div>
-                  <h3 className="font-semibold">React Performance Optimizer</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Created and maintained a popular open-source React library for optimizing component performance,
-                    with over 5k
-                    GitHub stars.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold">Contributions to Next.js</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Actively contribute to Next.js, having submitted several pull requests to improve documentation and
-                    fix minor
-                    bugs.
-                  </p>
-                </div>
+                {userProfileDetails.openSourceContributions.map((contribution, index) => (
+                  <div key={index}>
+                    <h3 className="font-semibold">{contribution.title}</h3>
+                    <p className="text-sm text-muted-foreground">{contribution.description}</p>
+                  </div>
+                ))}
               </div>
+
             </CardContent>
           </Card>
           <Card>
@@ -325,13 +308,7 @@ export default function Profile() {
               <CardTitle>Let's Connect! 🎉</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>
-                I'm always excited to meet fellow developers, share knowledge, and collaborate on interesting projects.
-                Whether
-                you're a seasoned pro or just starting out, feel free to reach out! Let's learn and grow together in
-                this amazing
-                world of technology. 🚀
-              </p>
+              <p>{userProfileDetails.connectionMessage}</p>
               <div className="mt-4 flex justify-center space-x-4">
                 <Button>Send Message 💬</Button>
                 <Button variant="outline">Follow 🤝</Button>
