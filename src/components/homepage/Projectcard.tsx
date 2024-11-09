@@ -6,6 +6,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { getDatabase, ref, query, orderByChild, equalTo, get } from "firebase/database";
 import { formatDistanceToNow } from 'date-fns';
 
+import dutawajar from '../../assets/dutawajar.png'
+
 interface ProjectcardProps {
     project: Project
 }
@@ -52,10 +54,13 @@ const Projectcard = ({project} : ProjectcardProps) => {
 
 
   return (
-    <div className='h-[15rem] min-w-[25rem] bg-gray-200 rounded-xl'>
+    <div className='min-h-[20rem] max-w-[40rem] mb-5 bg-white shadow-md rounded-xl'>
         {/* card content */}
-        <div className='flex flex-col p-5'> 
-            <div className='flex items-center gap-3'>
+        <div className='flex flex-col p-3 h-[100%]'> 
+          <div className='rounded-lg shadow-sm mb-4'>
+          <img className='rounded-lg' src='assets/dutawajar.png' alt="testimg" />
+          </div>
+            <div className='flex items-center gap-3 mb-4'>
                 <span className='bg-black h-[3rem] w-[3rem] rounded-full'>
                     {/* <img src={project.Img} className='h-full w-full object-cover rounded-full' /> */}
                 </span>
@@ -65,8 +70,15 @@ const Projectcard = ({project} : ProjectcardProps) => {
                 </div>
             </div>
             <div className='mt-[1rem]  overflow-hidden'>
-                <h1 className='text-xl font-bold'>{project.Title}</h1>
-                <h2>{project.Description}</h2>
+                <h1 className='text-lg font-bold'>{project.Title}</h1>
+                <h2 className='text-sm'>{project.Description}</h2>
+            </div>
+            <div className='mt-auto border-t-2 border-gray-600 pt-3 px-5' >
+              <div className='flex'>
+                {project.Tags ? project.Tags.map((tag: any) => (
+                  <span className='bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-sm mr-2 my-1 flex items-center' key={tag}>{tag}
+                  </span>)) : null}
+              </div>
             </div>
         </div>
     </div>

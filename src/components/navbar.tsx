@@ -6,7 +6,7 @@ import { useAuth } from '@/app/context/AuthContext'
 export default function Navbar() {
   const { user } = useAuth()
   return (
-    <header className="px-4 lg:px-6 h-14 flex items-center border-b">
+    <header className="px-4 lg:px-6 h-14 flex items-center border-b fixed w-full top-0 bg-white z-50">
         <Link className="flex items-center justify-center" href="/">
           <MountainIcon className="h-6 w-6"/>
           <span className="sr-only">Project Hub</span>

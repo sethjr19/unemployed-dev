@@ -3,13 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import Projectcard from './Projectcard'
 import { firestore } from '@/app/firebase/firebaseConfig'
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
 export interface Project {
     Title: string; // Change these based on your actual fields
     Description: string;
     User: string; 
     Date: string;
+    Tags: string[]
   }
 
 const Projectcontainer = () => {
@@ -20,11 +21,12 @@ const Projectcontainer = () => {
         const fetchProjects = async () => {
           try {
             const projectsCollection = collection(firestore, 'projects');
-            const projectsSnapshot = await getDocs(projectsCollection);
+            const sortedProjects = query(projectsCollection, orderBy('Date', 'desc'));
+            const projectsSnapshot = await getDocs(sortedProjects);
             const projectsData = projectsSnapshot.docs.map((doc) => doc.data());
             setProjects(projectsData);
             setLoading(false);
-            console.log(projectsData)
+            console.log(sortedProjects)
           } catch (error) {
             console.error('Error fetching projects:', error);
             setLoading(false);
@@ -41,8 +43,8 @@ const Projectcontainer = () => {
     
 
   return (
-    <div>
-        <div className='flex gap-4 overflow-hidden '>
+    <div className='container'>
+        <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-5'>
             {projects.map((project: any, index: number) => (
                 <Projectcard project={project} key={index} />
             ))}
