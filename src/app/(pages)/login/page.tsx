@@ -1,11 +1,11 @@
 'use client'
 
 import {useEffect, useState} from 'react'
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
+import {Button} from "@/app/shared/ui/button"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/app/shared/ui/card"
+import {Input} from "@/app/shared/ui/input"
+import {Label} from "@/app/shared/ui/label"
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/app/shared/ui/tabs"
 import {MountainIcon, Facebook, Twitter, Github} from 'lucide-react'
 import Link from 'next/link'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'

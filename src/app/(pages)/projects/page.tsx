@@ -1,71 +1,125 @@
 'use client'
 
 import {useState} from 'react'
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {Badge} from "@/components/ui/badge"
-import {MountainIcon, Search, Users} from 'lucide-react'
+import {Button} from "@/app/shared/ui/button"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/app/shared/ui/card"
+import {Input} from "@/app/shared/ui/input"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/app/shared/ui/select"
+import {Badge} from "@/app/shared/ui/badge"
+import {Search, Users} from 'lucide-react'
 import Link from 'next/link'
-import Navbar from '@/components/navbar'
-// Mock data for projects with roles
+import Navbar from '@/app/components/navbar'
+
 const projects = [
   {
     id: 1,
     title: "Community Garden",
-    description: "Help create and maintain a local community garden to promote sustainable living.",
+    description: "Build and maintain a community garden.",
     category: "Environment",
     members: 15,
     openSpots: 5,
-    roles: ["Project Manager", "UI Designer"],
+    roles: ["PM", "UI Designer"],
   },
   {
     id: 2,
     title: "Coding Workshop Series",
-    description: "Organize and run coding workshops for beginners in various programming languages.",
+    description: "Run coding workshops for beginners.",
     category: "Education",
     members: 8,
     openSpots: 7,
-    roles: ["Frontend Developer", "UX Designer"],
+    roles: ["Frontend Dev", "UX Designer"],
   },
   {
     id: 3,
     title: "Neighborhood Watch Program",
-    description: "Establish a neighborhood watch program to improve community safety and security.",
+    description: "Set up a neighborhood watch for safety.",
     category: "Safety",
     members: 20,
     openSpots: 10,
-    roles: ["DevOps", "Backend Developer"],
+    roles: ["DevOps", "Backend Dev"],
   },
   {
     id: 4,
     title: "Local History Preservation",
-    description: "Document and preserve local history through interviews, archiving, and digital storytelling.",
+    description: "Archive and share local history.",
     category: "Culture",
     members: 12,
     openSpots: 8,
-    roles: ["Project Manager", "Frontend Developer"],
+    roles: ["PM", "Frontend Dev"],
   },
   {
     id: 5,
     title: "Youth Mentorship Program",
-    description: "Connect experienced professionals with local youth for career guidance and personal development.",
+    description: "Pair professionals with youth mentors.",
     category: "Education",
     members: 25,
     openSpots: 15,
-    roles: ["UI Designer", "Backend Developer"],
+    roles: ["UI Designer", "Backend Dev"],
   },
   {
     id: 6,
     title: "Community Fitness Challenge",
-    description: "Organize a month-long fitness challenge to promote health and wellness in the community.",
+    description: "Organize a community fitness challenge.",
     category: "Health",
     members: 30,
     openSpots: 20,
     roles: ["UX Designer", "DevOps"],
   },
-]
+  {
+    id: 7,
+    title: "Art for All",
+    description: "Host art workshops for all ages.",
+    category: "Arts",
+    members: 10,
+    openSpots: 5,
+    roles: ["PM", "UI Designer"],
+  },
+  {
+    id: 8,
+    title: "Green Cleanup Drive",
+    description: "Organize cleanups in local parks.",
+    category: "Environment",
+    members: 20,
+    openSpots: 10,
+    roles: ["Frontend Dev", "UX Designer"],
+  },
+  {
+    id: 9,
+    title: "Mental Health Awareness Campaign",
+    description: "Promote mental health resources.",
+    category: "Health",
+    members: 12,
+    openSpots: 8,
+    roles: ["PM", "Backend Dev"],
+  },
+  {
+    id: 10,
+    title: "Digital Literacy Program",
+    description: "Teach digital skills to adults.",
+    category: "Education",
+    members: 15,
+    openSpots: 5,
+    roles: ["UX Designer", "Frontend Dev"],
+  },
+  {
+    id: 11,
+    title: "Local Food Drive",
+    description: "Collect and distribute food donations.",
+    category: "Community Service",
+    members: 25,
+    openSpots: 10,
+    roles: ["PM", "Backend Dev"],
+  },
+  {
+    id: 12,
+    title: "Senior Support Network",
+    description: "Assist seniors with daily needs.",
+    category: "Community Service",
+    members: 30,
+    openSpots: 15,
+    roles: ["UI Designer", "DevOps"],
+  },
+];
 
 export default function CommunityProjects() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -115,12 +169,12 @@ export default function CommunityProjects() {
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredProjects.map((project) => (
-              <Card key={project.id}>
-                <CardHeader>
+              <Card key={project.id} className="min-h-[250px] flex flex-col h-full">
+                <CardHeader className='min-h-[110px]'>
                   <CardTitle>{project.title}</CardTitle>
                   <CardDescription>{project.description}</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-grow pb-10">
                   <div className="flex justify-between items-center">
                     <Badge variant="secondary" className="rounded-2xl">{project.category}</Badge>
                     <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
@@ -130,18 +184,21 @@ export default function CommunityProjects() {
                   </div>
                   <div className="mt-2">
                     <p className="text-sm font-medium">Roles Needed:</p>
-
+                    <div className="flex flex-wrap gap-2">
                       {project.roles.map((role) => (
-                        <Badge key={role} className="text-sm bg-blue-500 text-gray-100 dark:text-gray-300 rounded-2xl gap-2">{role}</Badge>
+                        <Badge key={role} className="text-sm bg-blue-500 text-gray-100 dark:text-gray-300 rounded-2xl">
+                          {role}
+                        </Badge>
                       ))}
-
+                    </div>
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <p className="text-sm text-gray-500 dark:text-gray-400">{project.openSpots} spots left</p>
-                  <Button className='rounded-2xl'>Join Project</Button>
+                  <Button className="rounded-2xl">View Project</Button>
                 </CardFooter>
               </Card>
+
             ))}
           </div>
         </div>

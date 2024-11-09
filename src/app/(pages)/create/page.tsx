@@ -1,16 +1,14 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
-import { Text } from 'lucide-react'
-import { Checkbox } from '@/components/ui/checkbox'
 import Link from 'next/link'
-import Navbar from '@/components/navbar'
-import { Textarea } from '@/components/ui/textarea'
+import Navbar from '@/app/components/navbar'
+import { Textarea } from '@/app/shared/ui/textarea'
 import { useAuth } from '@/app/context/AuthContext'
 import { firestore } from '@/app/firebase/firebaseConfig'
 import { collection, addDoc } from "firebase/firestore"; 

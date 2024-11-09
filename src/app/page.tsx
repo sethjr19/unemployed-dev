@@ -1,21 +1,26 @@
 'use client'
 
 import {useEffect} from 'react'
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
+import {Button} from "@/app/shared/ui/button"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/app/shared/ui/card"
+import {Input} from "@/app/shared/ui/input"
 import {Facebook, Instagram, MountainIcon, Twitter} from "lucide-react"
 import Link from "next/link"
 import '../../src/app/globals.css'
-import Navbar from "@/components/navbar"
-import Mainhero from "@/components/mainhero"
-import Footer from "@/components/footer"
+import Navbar from "@/app/components/navbar"
+import Mainhero from "@/app/components/mainhero"
+import Footer from "@/app/components/footer"
 import { useAuth } from "./context/AuthContext"
 import { useRouter } from 'next/navigation'
+<<<<<<< HEAD
 import Cardcontainer from '@/components/homepage/Cardcontainer'
 import Projectcontainer from '@/components/homepage/Projectcontainer'
 import SectionHeader from '@/components/sectionHeader'
 import Sidenav from '@/components/sidebar'
+=======
+import Cardcontainer from '@/app/components/homepage/Cardcontainer'
+import Projectcontainer from '@/app/components/homepage/Projectcontainer'
+>>>>>>> 3fbf35ed77ffd329b531790c38dd0a315e9f2304
 
 export function HomeLayout() { 
   return (
