@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import { projectTags } from '@/lib/data'
 
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from './ui/input'
+import { Label } from '@radix-ui/react-label'
+import { Checkbox } from '@radix-ui/react-checkbox'
 
 type TagsModalProps = {
     handleTags: (selectedTags: string[]) => void;
